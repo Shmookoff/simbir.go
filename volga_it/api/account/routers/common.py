@@ -1,0 +1,2 @@
+PREFIX = "/Account"
+TAG = "AccountController"

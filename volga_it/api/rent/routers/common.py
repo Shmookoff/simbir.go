@@ -1,0 +1,2 @@
+PREFIX = "/Rent"
+TAG = "RentController"
