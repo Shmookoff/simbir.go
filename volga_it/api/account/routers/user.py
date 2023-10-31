@@ -1,12 +1,11 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 
 from .. import controller as AccountController
 from ..dependencies import GetAccount, get_access_token
 from ..schemas import (
     AccessTokenPayload,
-    AccountAdminUpdateable,
     AccountAuthorizationCredentials,
     AccountCreate,
     AccountRead,
@@ -33,11 +32,11 @@ def sign_up(data: AccountCreate):
     return AccountController.create(data)
 
 
-@router.post("/SignOut")
+@router.post("/SignOut", status_code=status.HTTP_204_NO_CONTENT)
 def sign_out(access_token: Annotated[AccessTokenPayload, Depends(get_access_token)]):
     return AccountController.sign_out(access_token)
 
 
-@router.put("/Update", response_model=AccountAdminUpdateable)
+@router.put("/Update", response_model=AccountRead)
 def update(account: GetAccount, data: AccountUpdate):
     return AccountController.update(account, data)
