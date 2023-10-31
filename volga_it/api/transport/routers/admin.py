@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, status
 
 from volga_it.api.account.dependencies import get_admin
 from volga_it.api.admin.common import ADMIN_BASE_TAG, ADMIN_PREFIX
@@ -37,7 +37,7 @@ def read(transport: TransportById):
     return TransportController.read(transport)
 
 
-@router.post("")
+@router.post("", status_code=status.HTTP_201_CREATED)
 def create(data: AdminTransportCreate):
     return TransportController.create_as_admin(data)
 
@@ -47,6 +47,6 @@ def update(transport: TransportById, data: AdminTransportUpdate):
     return TransportController.update(transport, data)
 
 
-@router.delete("/{transport_id}")
+@router.delete("/{transport_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(transport: TransportById):
     return TransportController.delete(transport)

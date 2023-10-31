@@ -9,6 +9,7 @@ from ..schemas import (
     AccountAdminUpdateable,
     AccountAuthorizationCredentials,
     AccountCreate,
+    AccountRead,
     AccountToken,
     AccountUpdate,
 )
@@ -17,7 +18,7 @@ from .common import PREFIX, TAG
 router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 
-@router.get("/Me", response_model=AccountAdminUpdateable)
+@router.get("/Me", response_model=AccountRead)
 def read_self(account: GetAccount):
     return AccountController.read(account)
 
@@ -27,7 +28,7 @@ def sign_in(data: AccountAuthorizationCredentials):
     return AccountController.sign_in(data)
 
 
-@router.post("/SignUp", response_model=AccountAdminUpdateable)
+@router.post("/SignUp", response_model=AccountRead)
 def sign_up(data: AccountCreate):
     return AccountController.create(data)
 

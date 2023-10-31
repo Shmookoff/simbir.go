@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, status
 
 from volga_it.api.admin.common import ADMIN_BASE_TAG, ADMIN_PREFIX
 
@@ -31,7 +31,9 @@ def read(account: AccountById):
     return AccountController.read(account)
 
 
-@router.post("", response_model=AccountAdminUpdateable)
+@router.post(
+    "", response_model=AccountAdminUpdateable, status_code=status.HTTP_201_CREATED
+)
 def create(data: AdminAccountCreate):
     return AccountController.create(data)
 
@@ -41,6 +43,6 @@ def update(account: AccountById, data: AdminAccountUpdate):
     return AccountController.update(account, data)
 
 
-@router.delete("/{account_id}")
+@router.delete("/{account_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(account: AccountById):
     return AccountController.delete(account)

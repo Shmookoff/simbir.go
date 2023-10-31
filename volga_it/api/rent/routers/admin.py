@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, status
 
 from volga_it.api.account import AccountById
 from volga_it.api.account.dependencies import get_admin
@@ -34,7 +34,7 @@ def list_transport_history(transport: TransportById):
     return RentController.transport_history(transport)
 
 
-@router.post("", response_model=RentRead)
+@router.post("", response_model=RentRead, status_code=status.HTTP_201_CREATED)
 def create(data: AdminRentCreate):
     return RentController.create_as_admin(data)
 
@@ -53,6 +53,6 @@ def update(rent: RentById, data: AdminRentUpdate):
     return RentController.update_as_admin(rent, data)
 
 
-@router.delete("/{rent_id}")
+@router.delete("/{rent_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(rent: RentById):
     return RentController.delete(rent)

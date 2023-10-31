@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 
 from volga_it.api.account import GetAccount
 
@@ -15,7 +15,7 @@ def read(transport: TransportById):
     TransportController.read(transport)
 
 
-@router.post("", response_model=TransportRead)
+@router.post("", response_model=TransportRead, status_code=status.HTTP_201_CREATED)
 def create(account: GetAccount, data: TransportCreate):
     return TransportController.create(account, data)
 
@@ -25,6 +25,6 @@ def update(transport: GetOwnedTransport, data: TransportUpdate):
     return TransportController.update(transport, data)
 
 
-@router.delete("/{transport_id}")
+@router.delete("/{transport_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(transport: GetOwnedTransport):
     return TransportController.delete(transport)
