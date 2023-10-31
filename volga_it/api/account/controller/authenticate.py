@@ -1,4 +1,3 @@
-import secrets
 from typing import TypeVar
 
 from jose import JWTError, jwt
@@ -23,14 +22,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def authenticate_by_credentials(username: AccountUsername, password: AccountPassword):
     account = Account.first(Account.username == username)
 
-    account_password = account.password if account else secrets.token_urlsafe()
+    if not account:
+        return
 
-    if pwd_context.verify(password, account_password):
-        is_password_correct = True
-    else:
-        is_password_correct = False
-
-    if account and is_password_correct:
+    if pwd_context.verify(password, account.password):
         return account
 
 
