@@ -1,6 +1,4 @@
-from typing import Annotated
-
-from pydantic import PostgresDsn, UrlConstraints, field_validator
+from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -15,5 +13,4 @@ class Settings(BaseSettings):
     JWT_ACCESS_TTL_SECONDS: int
 
 
-settings = Settings.model_validate({})
 settings = Settings.model_validate({})
