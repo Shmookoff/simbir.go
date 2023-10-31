@@ -11,10 +11,10 @@ class RentBase(APISchema):
     transport_id: int
     user_id: int
     time_start: datetime
-    time_end: datetime | None
+    time_end: datetime | None = None
     price_of_unit: float
     price_type: Rent.PriceType
-    final_price: float | None
+    final_price: float | None = None
 
 
 class RentListItem(APISchema):

@@ -8,7 +8,8 @@ def find_transport(
     latitude: float, longitude: float, radius: float, type: TransportTypeFilter
 ):
     clauses: list[_ColumnExpressionArgument[bool]] = [
-        Transport.location.contained_in(Circle(latitude, longitude, radius))
+        Transport.location.contained_in(Circle(latitude, longitude, radius)),
+        Transport.can_be_rented == True,
     ]
     if type != "All":
         clauses.append(Transport.transport_type == type)

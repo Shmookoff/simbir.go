@@ -27,7 +27,9 @@ def end(rent: Rent, latitude: float, longitude: float):
 
     final_price = units * rent.price_of_unit
 
-    Transport(id=rent.transport_id).update(location=Point(latitude, longitude))
+    Transport(id=rent.transport_id).update(
+        location=Point(latitude, longitude), can_be_rented=True
+    )
     # rent.transport.update(location=Point(latitude, longitude))
 
     renter = Account.find_or_fail(rent.user_id)
