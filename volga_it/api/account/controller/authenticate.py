@@ -1,4 +1,5 @@
 import secrets
+from typing import NewType, Type, TypeVar
 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -9,7 +10,9 @@ from volga_it.settings import settings
 from ..models import AccessToken, Account
 from ..schemas import (
     AccessTokenPayload,
+    AccountCreate,
     AccountPassword,
+    AccountUpdate,
     AccountUsername,
     EncodedAccessToken,
 )
@@ -43,3 +46,11 @@ def authenticate_by_access_token(access_token: EncodedAccessToken):
         return
 
     return payload
+
+
+DataT = TypeVar("DataT", bound=AccountCreate | AccountUpdate)
+
+
+def process_new_data(data: DataT) -> DataT:
+    data.password = pwd_context.hash(data.password)
+    return data
