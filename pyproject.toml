@@ -23,6 +23,8 @@ fastapi-sqlalchemy = "^0.2.1"
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.6.1"
 black = "^23.10.1"
+types-python-jose = "^3.3.4.8"
+types-passlib = "^1.7.7.13"
 
 [build-system]
 requires = ["poetry-core"]
