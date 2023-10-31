@@ -1,5 +1,5 @@
 import secrets
-from typing import NewType, Type, TypeVar
+from typing import TypeVar
 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
