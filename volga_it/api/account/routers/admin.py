@@ -22,8 +22,11 @@ router = APIRouter(
 
 
 @router.get("", response_model=AccountList)
-def list(start: Annotated[int, Query(gt=0)], count: Annotated[int, Query(gt=0)]):
-    return AccountController.list(start, count)
+def list(
+    count: Annotated[int, Query(gt=0)],
+    start: Annotated[int, Query(ge=0)],
+):
+    return AccountController.list(count, start)
 
 
 @router.get("/{account_id}", response_model=AccountAdminUpdateable)
