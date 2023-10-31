@@ -5,11 +5,15 @@ from .type import PostgresPoint
 
 
 class PointLoader(Loader):
-    def load(self, data: str | None):
-        if data is None:
+    def load(self, data: bytes):
+        if isinstance(data, memoryview):
+            data = bytes(data)
+
+        v = data.decode()
+        if v == "None":
             return None
 
         try:
-            return PostgresPoint.from_string(data)
+            return PostgresPoint.from_string(v)
         except ValueError:
-            raise InterfaceError("bad point representation: %r" % data)
+            raise InterfaceError("bad point representation: %r" % v)

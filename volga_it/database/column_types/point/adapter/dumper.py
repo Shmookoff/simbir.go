@@ -7,4 +7,4 @@ class PointDumper(Dumper):
     oid = PostgresPoint.oid
 
     def dump(self, elem: PostgresPoint):
-        return elem.to_string()
+        return elem.to_string().encode()

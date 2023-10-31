@@ -7,4 +7,4 @@ class CircleDumper(Dumper):
     oid = PostgresCircle.oid
 
     def dump(self, elem: PostgresCircle):
-        return elem.to_string()
+        return elem.to_string().encode()
