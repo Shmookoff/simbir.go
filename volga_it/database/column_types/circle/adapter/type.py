@@ -1,5 +1,4 @@
-from collections.abc import Iterable
-from typing import Self, Tuple
+from typing import Self
 
 from psycopg import adapters
 

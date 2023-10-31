@@ -25,11 +25,11 @@ router = APIRouter(
 
 @router.get("", response_model=TransportList)
 def list(
-    start: Annotated[int, Query(gt=0)],
+    start: Annotated[int, Query(ge=0)],
     count: Annotated[int, Query(gt=0)],
     transport_type: Annotated[TransportTypeFilter, Query(alias="transportType")],
 ):
-    return TransportController.list(start, count, transport_type)
+    return TransportController.list(count, start, transport_type)
 
 
 @router.get("/{transport_id}", response_model=TransportRead)
@@ -37,12 +37,12 @@ def read(transport: TransportById):
     return TransportController.read(transport)
 
 
-@router.post("", status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=TransportRead, status_code=status.HTTP_201_CREATED)
 def create(data: AdminTransportCreate):
     return TransportController.create_as_admin(data)
 
 
-@router.put("/{transport_id}")
+@router.put("/{transport_id}", response_model=TransportRead)
 def update(transport: TransportById, data: AdminTransportUpdate):
     return TransportController.update(transport, data)
 

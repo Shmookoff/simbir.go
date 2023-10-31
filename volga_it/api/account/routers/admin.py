@@ -23,8 +23,8 @@ router = APIRouter(
 
 @router.get("", response_model=AccountList)
 def list(
-    count: Annotated[int, Query(gt=0)],
     start: Annotated[int, Query(ge=0)],
+    count: Annotated[int, Query(gt=0)],
 ):
     return AccountController.list(count, start)
 

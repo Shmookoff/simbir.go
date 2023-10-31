@@ -1,4 +1,4 @@
-from pydantic import RootModel
+from pydantic import ConfigDict, Field, RootModel, computed_field
 
 from volga_it.database.column_types import Point
 from volga_it.schemas.api import APISchema
@@ -11,35 +11,66 @@ class TransportBase(APISchema):
     model: str
     color: str
     identifier: str
-    description: str | None
+    description: str | None = None
+    minute_price: float | None = None
+    day_price: float | None = None
+
+
+class TransportTraitLocation(APISchema):
     latitude: float
     longitude: float
-    minute_price: float | None
-    day_price: float | None
 
     def to_model_data(self):
         return {
-            **super().to_model_data(),
+            **super().to_model_data(exclude={"latitude", "longitude"}),
             "location": Point(self.latitude, self.longitude),
         }
 
 
-class TransportCreate(TransportBase):
+class TransportTraitTransportType(APISchema):
     transport_type: Transport.TransportType
 
 
-class TransportAdminUpdateable(TransportBase):
+class TransportTraitOwnerId(APISchema):
     owner_id: int
 
 
-class TransportRead(TransportAdminUpdateable):
+class TransportCreate(
+    TransportBase, TransportTraitTransportType, TransportTraitLocation
+):
+    pass
+
+
+class TransportRead(TransportBase, TransportTraitTransportType, TransportTraitOwnerId):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     id: int
+    location: Point = Field(exclude=True)
+
+    @computed_field
+    @property
+    def latitude(self) -> float:
+        return self.location.x
+
+    @computed_field
+    @property
+    def longitude(self) -> float:
+        return self.location.y
 
 
 TransportList = RootModel[list[TransportRead]]
 
 
-class TransportUpdate(TransportCreate):
+class TransportUpdate(TransportBase, TransportTraitLocation):
+    pass
+
+
+class TransportAdminUpdateable(
+    TransportBase,
+    TransportTraitTransportType,
+    TransportTraitLocation,
+    TransportTraitOwnerId,
+):
     pass
 
 

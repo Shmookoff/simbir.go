@@ -12,7 +12,7 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 @router.get("/{transport_id}", response_model=TransportRead)
 def read(transport: TransportById):
-    TransportController.read(transport)
+    return TransportController.read(transport)
 
 
 @router.post("", response_model=TransportRead, status_code=status.HTTP_201_CREATED)

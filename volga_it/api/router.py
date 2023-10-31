@@ -7,6 +7,6 @@ from .transport.routers import router as transport_router
 
 api_router = APIRouter(prefix="/api")
 api_router.include_router(account_router)
+api_router.include_router(payment_router)
 api_router.include_router(transport_router)
 api_router.include_router(rent_router)
-api_router.include_router(payment_router)

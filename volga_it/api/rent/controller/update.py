@@ -16,7 +16,7 @@ def end(rent: Rent, latitude: float, longitude: float):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Rent already ended")
 
     now = datetime.now()
-    delta = rent.time_start - now
+    delta = now - rent.time_start
 
     if rent.price_type == "Minutes":
         units = ceil(delta.total_seconds() / 60)
@@ -27,7 +27,7 @@ def end(rent: Rent, latitude: float, longitude: float):
 
     final_price = units * rent.price_of_unit
 
-    Transport(id=rent.transport_id).update(
+    Transport.find_or_fail(rent.transport_id).update(
         location=Point(latitude, longitude), can_be_rented=True
     )
     # rent.transport.update(location=Point(latitude, longitude))

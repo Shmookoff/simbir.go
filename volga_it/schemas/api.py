@@ -1,7 +1,11 @@
 import re
 from functools import partial
+from typing import TYPE_CHECKING, Literal
 
 from pydantic import BaseModel, ConfigDict
+
+if TYPE_CHECKING:
+    from pydantic.main import IncEx
 
 
 def snake2camel(snake: str, start_lower: bool = False) -> str:
@@ -30,5 +34,27 @@ class APISchema(BaseModel):
         populate_by_name=True,
     )
 
-    def to_model_data(self):
-        return self.model_dump()
+    def to_model_data(
+        self,
+        *,
+        mode: Literal["json", "python"] | str = "python",
+        include: "IncEx" = None,
+        exclude: "IncEx" = None,
+        by_alias: bool = False,
+        exclude_unset: bool = False,
+        exclude_defaults: bool = False,
+        exclude_none: bool = False,
+        round_trip: bool = False,
+        warnings: bool = True
+    ):
+        return self.model_dump(
+            mode=mode,
+            include=include,
+            exclude=exclude,
+            by_alias=by_alias,
+            exclude_unset=exclude_unset,
+            exclude_defaults=exclude_defaults,
+            exclude_none=exclude_none,
+            round_trip=round_trip,
+            warnings=warnings,
+        )

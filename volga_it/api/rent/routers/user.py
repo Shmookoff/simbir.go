@@ -29,14 +29,16 @@ def find_transport(
     return RentController.find_transport(lat, long, radius, type)
 
 
+@router.get("/MyHistory", response_model=RentList)
+def list_user_history(account: GetAccount):
+    user_history = RentController.user_history(account)
+    print(user_history)
+    return user_history
+
+
 @router.get("/{rent_id}", response_model=RentRead)
 def read(rent: GetRentRenterOrOwner):
     return RentController.read(rent)
-
-
-@router.get("/MyHistory", response_model=RentList)
-def list_user_history(account: GetAccount):
-    return RentController.user_history(account)
 
 
 @router.get("/TransportHistory/{transport_id}", response_model=RentList)

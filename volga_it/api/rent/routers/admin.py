@@ -29,7 +29,7 @@ def list_user_history(account: AccountById):
     return RentController.user_history(account)
 
 
-@router.get("/UserHistory/{transport_id}", response_model=RentList)
+@router.get("/TransportHistory/{transport_id}", response_model=RentList)
 def list_transport_history(transport: TransportById):
     return RentController.transport_history(transport)
 

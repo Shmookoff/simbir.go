@@ -1,5 +1,7 @@
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
+from psycopg.errors import ForeignKeyViolation
+from psycopg.errors import IntegrityError as PsycopgIntegrityError
 from psycopg.errors import UniqueViolation
 from sqlalchemy import inspect
 from sqlalchemy.exc import IntegrityError
@@ -31,3 +33,10 @@ async def integrity_error_handler(request: Request, exc: IntegrityError):
             f"{col_msg} must be unique",
             status_code=status.HTTP_409_CONFLICT,
         )
+    if isinstance(exc.orig, ForeignKeyViolation):
+        return JSONResponse(
+            "Linked entity was not found",
+            status_code=status.HTTP_409_CONFLICT,
+        )
+
+    raise exc
